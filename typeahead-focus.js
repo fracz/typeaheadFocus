@@ -17,6 +17,9 @@ angular.module('typeahead-focus', [])
 
           // Array of keyCode values for arrow keys
           const ARROW_KEYS = [37,38,39,40];
+          
+          // keyCodes for tab, enter & esc
+          const HOT_KEYS = [9, 13, 27];
 
           function manipulateViewValue(e) {
             /* we have to check to see if the arrow keys were in the input because if they were trying to select
@@ -33,6 +36,12 @@ angular.module('typeahead-focus', [])
              * something, leaves and enter the field again - typeahead should show previous suggestions.
              */
             if (angular.isDefined(attr.typeaheadFocusNotEmpty) && !ngModel.$viewValue) {
+              return;
+            }
+            
+            // stop executing when we already have a value and "hot key" pressed
+            // to allow normal behaviour like moving to next input field
+            if (ngModel.$viewValue && HOT_KEYS.indexOf(e.keyCode) >= 0) {
               return;
             }
 
